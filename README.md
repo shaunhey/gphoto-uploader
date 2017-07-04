@@ -1,33 +1,23 @@
 # gphoto-uploader
-Google photos uploader working in Linux
+Docker image for running Google Photos Desktop Uploader under Linux/Wine and x11vnc  
+(translated from [uyorum/gphoto-uploader](https://github.com/uyorum/gphoto-uploader))
 
-## これは何？
-[Google フォト](https://photos.google.com/) アップローダをLinux上で動かします．
+## Overview
 
-## 概要
-本来，Linux用のバイナリは配布されていないのでWindows用のバイナリを[Wine](https://www.winehq.org/)を使って動かします．  
-ですので割と不安定かもしれません．
-
-Wine上の認証はなぜかうまくいかないので，あらかじめWindows上で認証を済ませたレジストリを用意する必要があります．
-
-1. 適当なWindowsにGoogleフォトアップローダをインストール
-1. アップロードしたいアカウントでログインする
-1. 「HKCU\Software\Google\Picasa\Picasa2\Preferences」をエクスポート，gphoto.regというファイル名で保存
-
-Googleフォトアップローダをサイレントインストールできなかったのでコンテナを起動してからGUIでアップローダをインストールします．  
-VNCクライアントを用意しておいてください．
+1. Install [Google Photos Desktop Uploader](https://photos.google.com/apps) on a Windows machine
+2. Log in with the account you want to use
+3. Export "HKEY\_CURRENT\_USER\Software\Google\Picasa\Picasa2\Preferences" to gphoto.reg
 
 ```bash
-$ git clone https://github.com/uyorum/gphoto-uploader
-$ cd google-photos-uploader
-(このディレクトリに「gphoto.reg」を保存)
-$ docker build -t google-photos-uploader .
+$ git clone https://github.com/shaunhey/gphoto-uploader
+$ cd gphoto-uploader
+  (copy gphoto.reg to this directory)
+$ docker build -t gphoto-uploader .
 $ docker run -d \
-    --name google-photos-uploader \
+    --name gphoto-uploader \
     -p 5900:5900
     -v /PATH/TO/UPLOAD:/upload \
-    google-photos-uploader
+    gphoto-uploader
 ```
 
-VNCクライアントでDockerホストのIPアドレスへ接続するとインストーラが起動しているのでウィザードを進めてください．  
-インストールが完了すると既にログインが済んでいるのでアップロードするディレクトリなどを選択してバックアップを開始してください．
+Once the container is running, connect to localhost:5900 using the vnc client of your choice to complete the Google Photos Desktop Uploader installation and configuration.
