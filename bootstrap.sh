@@ -7,7 +7,7 @@ EXE="$HOME/.wine/drive_c/users/$(whoami)/Local Settings/Application Data/Program
 export DISPLAY=:1
 rm -f /tmp/.X1-lock
 Xvfb :1 -screen 0 1024x768x24 &
-x11vnc -display :1 -bg -nopw -listen 0.0.0.0 -ncache 10
+x11vnc -display :1 -bg -nopw -listen 0.0.0.0 -ncache 10 -forever -nevershared
 
 if [ ! -f "$EXE" ]; then
   wine regedit /s "$REG"
